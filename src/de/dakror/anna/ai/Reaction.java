@@ -133,7 +133,7 @@ public class Reaction
 	// @Override
 	// public void close()
 	// {
-	// Game.currentGame.leftAmp = Game.currentGame.rightAmp = 0;
+	// Game.currentGame.amp = null;// leftAmp = Game.currentGame.rightAmp = 0;
 	// delegate.close();
 	// }
 	//
@@ -165,15 +165,20 @@ public class Reaction
 	// @Override
 	// public void write(short[] sample, int offs, int len) throws JavaLayerException
 	// {
-	// short[] s = Arrays.copyOfRange(sample, offs, offs + 1025 - 1);
-	// Complex[] complex = new Complex[s.length];
+	// short[] s = Arrays.copyOfRange(sample, offs, offs + 512);
+	// final Complex[] complex = new Complex[s.length];
 	// for (int i = 0; i < complex.length; i++)
 	// {
 	// complex[i] = new Complex(s[i], 0);
 	// }
-	//
-	// Complex[] fftTransformed = FFT.fft(complex);
-	// CFG.p(fftTransformed[0].toString());
+	// new Thread()
+	// {
+	// @Override
+	// public void run()
+	// {
+	// Game.currentGame.amp = FFT.fft(complex);
+	// }
+	// }.start();
 	// // short[] sampleLeft = getSampleLeft(sample, offs, len);
 	// // short[] sampleRight = getSampleRight(sample, offs, len);
 	// // CFG.p(getUnsignedAverage(sampleLeft));

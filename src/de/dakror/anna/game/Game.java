@@ -28,7 +28,7 @@ public class Game extends GameFrame
 	public Synthesiser synthesiser;
 	public Player player;
 	
-	// public float leftAmp, rightAmp;
+	// public Complex[] amp; float leftAmp, rightAmp;
 	
 	public File file;
 	

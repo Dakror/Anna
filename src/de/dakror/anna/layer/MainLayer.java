@@ -25,10 +25,25 @@ public class MainLayer extends Layer
 		//
 		// g.setColor(Color.blue);
 		//
-		// int width = Game.getWidth() / 4;
-		//
+		// int width = Game.getWidth() / 3 * 2;
+		// int height = Game.getHeight() / 8;
+		// if (Game.currentGame.amp != null)
+		// {
+		// try
+		// {
+		// int wper = width / Game.currentGame.amp.length;
+		// for (int i = 0; i < Game.currentGame.amp.length / 2; i++)
+		// {
+		// double mag = Game.currentGame.amp[i].getMagnitude();
+		// CFG.p(mag / 44100d);
+		// double h = height / 2 * mag / 44100d;
+		// g.fillRect((Game.getWidth() - width) / 2 + wper * i, Game.getHeight() / 4 * 3 - (int) Math.round(h), wper, (int) Math.round(h));
+		// }
+		// }
+		// catch (NullPointerException e)
+		// {}
 		// g.fillRect(Math.round(Game.getWidth() / 2 - Game.currentGame.leftAmp * width), Math.round(Game.getHeight() / 4 * 3), Math.round(Game.currentGame.leftAmp * width + Game.currentGame.rightAmp * width), 20);
-		//
+		// }
 		// g.setColor(c);
 	}
 	
