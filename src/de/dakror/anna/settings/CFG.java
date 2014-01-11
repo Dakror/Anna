@@ -7,6 +7,9 @@ import java.util.Arrays;
  */
 public class CFG
 {
+	// -- UniVersion -- //
+	public static final int VERSION = 2014011110;
+	public static final int PHASE = 0;
 	static long time = 0;
 	
 	public static void u()
