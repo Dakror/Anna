@@ -28,6 +28,8 @@ public class Reaction
 		CFG.p(input.getResponse(), input.getConfidence(), input.getAllPossibleResponses());
 		
 		if ((c(" hello ") && cn()) || c(" hello ")) respond("hello");
+		else if (c(" how are you ")) respond("I'm fine. thanks");
+		else if (c(" your name ")) respond("My name is Anna");
 		else if (c(" how old ") || c(" version ") || c(" age ")) respond("My current version is " + CFG.PHASE + "." + CFG.VERSION);
 		else if (c(" wood chuck ") || c(" woodchuck ") || c(" chuck wood ")) respond("He would chuck, he would, as much as he could, and chuck as much wood as a woodchuck would, if a woodchuck could chuck wood.");
 		else if (c(" browse ") || c(" internet "))
