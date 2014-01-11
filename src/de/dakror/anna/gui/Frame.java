@@ -62,7 +62,7 @@ public class Frame extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				if (mic != null && mic.getState() != CaptureState.CLOSED) // already recording
+				if (mic.getState() != CaptureState.CLOSED) // already recording
 				{
 					mic.close();
 					sendRecognizeRequest();

@@ -7,7 +7,7 @@ import javazoom.jl.player.Player;
 
 import com.darkprograms.speech.recognizer.GoogleResponse;
 
-import de.dakror.anna.gui.Frame;
+import de.dakror.anna.game.Game;
 import de.dakror.anna.settings.CFG;
 import de.dakror.anna.util.Assistant;
 
@@ -26,7 +26,7 @@ public class Reaction
 		if ((c(" hello ") && cn()) || c(" hello ")) respond("hello");
 		else if (c(" pi ")) respond("the first 15 digits of Pi are " + Math.PI);
 		else if (c(" how old ") || c(" version ") || c(" age ")) respond("My current version is " + CFG.PHASE + "." + CFG.VERSION);
-		else if (c(" wood chuck ") || c("woodchuck ") || c(" chuck wood ")) respond("He would chuck, he would, as much as he could, and chuck as much wood as a woodchuck would, if a woodchuck could chuck wood.");
+		else if (c(" wood chuck ") || c(" woodchuck ") || c(" chuck wood ")) respond("He would chuck, he would, as much as he could, and chuck as much wood as a woodchuck would, if a woodchuck could chuck wood.");
 		else if (c(" browse ") || c(" internet "))
 		{
 			String[] parts = input.getResponse().split(" ");
@@ -94,8 +94,8 @@ public class Reaction
 	{
 		try
 		{
-			Frame.frame.player = new Player(Frame.frame.synthesiser.getMP3Data(text));
-			Frame.frame.player.play();
+			Game.currentGame.player = new Player(Game.currentGame.synthesiser.getMP3Data(text)/* , new VisualEffectDevice(new JavaSoundAudioDeviceFactory().createAudioDevice()) */);
+			Game.currentGame.player.play();
 		}
 		catch (Exception e)
 		{
@@ -106,12 +106,126 @@ public class Reaction
 	private static boolean c(String s)
 	{
 		if (input.getResponse() == null) return false;
-		return (" " + input.getResponse().toLowerCase()).contains(s);
+		return i().contains(s);
 	}
 	
 	private static boolean cn()
 	{
 		if (input.getResponse() == null) return false;
-		return (" " + input.getResponse().toLowerCase()).contains("anna") || (" " + input.getResponse().toLowerCase()).contains("ana");
+		return i().contains("anna") || i().contains("ana");
 	}
+	
+	private static String i()
+	{
+		return (" " + input.getResponse().toLowerCase() + " ");
+	}
+	
+	// public static class VisualEffectDevice implements AudioDevice
+	// {
+	// private Decoder decoder;
+	// private AudioDevice delegate;
+	//
+	// public VisualEffectDevice(AudioDevice delegate)
+	// {
+	// this.delegate = delegate;
+	// }
+	//
+	// @Override
+	// public void close()
+	// {
+	// Game.currentGame.leftAmp = Game.currentGame.rightAmp = 0;
+	// delegate.close();
+	// }
+	//
+	// @Override
+	// public void flush()
+	// {
+	// delegate.flush();
+	// }
+	//
+	// @Override
+	// public int getPosition()
+	// {
+	// return delegate.getPosition();
+	// }
+	//
+	// @Override
+	// public boolean isOpen()
+	// {
+	// return delegate.isOpen();
+	// }
+	//
+	// @Override
+	// public void open(Decoder decoder) throws JavaLayerException
+	// {
+	// delegate.open(decoder);
+	// this.decoder = decoder;
+	// }
+	//
+	// @Override
+	// public void write(short[] sample, int offs, int len) throws JavaLayerException
+	// {
+	// short[] s = Arrays.copyOfRange(sample, offs, offs + 1025 - 1);
+	// Complex[] complex = new Complex[s.length];
+	// for (int i = 0; i < complex.length; i++)
+	// {
+	// complex[i] = new Complex(s[i], 0);
+	// }
+	//
+	// Complex[] fftTransformed = FFT.fft(complex);
+	// CFG.p(fftTransformed[0].toString());
+	// // short[] sampleLeft = getSampleLeft(sample, offs, len);
+	// // short[] sampleRight = getSampleRight(sample, offs, len);
+	// // CFG.p(getUnsignedAverage(sampleLeft));
+	// // Game.currentGame.leftAmp = getUnsignedAverage(sampleLeft) / 32768f;
+	// // Game.currentGame.rightAmp = getUnsignedAverage(sampleRight) / 32768f;
+	// delegate.write(sample, offs, len);
+	// }
+	//
+	// private int channels()
+	// {
+	// return decoder.getOutputChannels();
+	// }
+	//
+	// private short[] getSampleRight(short[] sample, int offs, int len)
+	// {
+	// short[] temp = Arrays.copyOfRange(sample, offs, offs + len - 1);
+	// if (channels() == 1)
+	// {
+	// return temp;
+	// }
+	// short[] sampleRight = new short[temp.length / 2];
+	// for (int i = sampleRight.length - 1; i > 0; i--)
+	// {
+	// sampleRight[i] = temp[i * 2 + 1];
+	// }
+	// return sampleRight;
+	// }
+	//
+	// private short[] getSampleLeft(short[] sample, int offs, int len)
+	// {
+	// short[] temp = Arrays.copyOfRange(sample, offs, offs + len - 1);
+	// if (channels() == 1)
+	// {
+	// return temp;
+	// }
+	// short[] sampleLeft = new short[temp.length / 2];
+	// for (int i = sampleLeft.length - 1; i > 0; i--)
+	// {
+	// sampleLeft[i] = temp[i * 2];
+	// }
+	// return sampleLeft;
+	// }
+	//
+	// private static int getUnsignedAverage(short[] sample)
+	// {
+	// CFG.p(Arrays.toString(sample));
+	// int sum = 0;
+	// for (short val : sample)
+	// {
+	// sum += val + Math.abs(Short.MIN_VALUE);
+	// }
+	// return sum / sample.length;
+	// }
+	// }
 }
