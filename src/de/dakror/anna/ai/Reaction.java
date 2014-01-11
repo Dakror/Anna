@@ -1,7 +1,11 @@
 package de.dakror.anna.ai;
 
 import java.awt.Desktop;
+import java.io.File;
 import java.net.URI;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 
 import javazoom.jl.player.Player;
 
@@ -24,7 +28,6 @@ public class Reaction
 		CFG.p(input.getResponse(), input.getConfidence(), input.getAllPossibleResponses());
 		
 		if ((c(" hello ") && cn()) || c(" hello ")) respond("hello");
-		else if (c(" pi ")) respond("the first 15 digits of Pi are " + Math.PI);
 		else if (c(" how old ") || c(" version ") || c(" age ")) respond("My current version is " + CFG.PHASE + "." + CFG.VERSION);
 		else if (c(" wood chuck ") || c(" woodchuck ") || c(" chuck wood ")) respond("He would chuck, he would, as much as he could, and chuck as much wood as a woodchuck would, if a woodchuck could chuck wood.");
 		else if (c(" browse ") || c(" internet "))
@@ -87,6 +90,69 @@ public class Reaction
 				Desktop.getDesktop().browse(new URI("http://google.com/search?q=" + q + (images ? "&tbm=isch" : "")));
 			}
 		}
+		else if (c(" start ") && (c(" toolbar ") || c(" tool bar ")))
+		{
+			String[] parts = input.getResponse().split(" ");
+			
+			File dir = new File(System.getenv("AppData") + "/Microsoft/Internet Explorer/Quick Launch/User Pinned/TaskBar");
+			boolean app = false;
+			for (File f : dir.listFiles())
+			{
+				boolean found = true;
+				for (int i = 0; i < parts.length; i++)
+				{
+					if (parts[i].toLowerCase().contains("start") || parts[i].toLowerCase().contains("toolbar")) continue;
+					
+					if (!f.getName().toLowerCase().contains(parts[i].toLowerCase()))
+					{
+						Thread.sleep(1);
+						found = false;
+						break;
+					}
+				}
+				
+				if (found)
+				{
+					respond("Opening " + f.getName().substring(0, f.getName().lastIndexOf(".")));
+					Runtime.getRuntime().exec("rundll32 SHELL32.DLL,ShellExec_RunDLL \"" + f.getPath() + "\"");
+					
+					app = true;
+					break;
+				}
+			}
+			
+			if (!app)
+			{
+				respond("I couldn't find any program in your toolbar with that name. I'm sorry");
+			}
+		}
+		// -- maths -- //
+		else if (c(" calculate ") || c(" plus ") || c(" minus ") || c("-") || c(" times ") || c(" divided ") || c(" divide "))
+		{
+			String equation = "";
+			
+			String[] parts = input.getResponse().split(" ");
+			for (String part : parts)
+			{
+				String s = part;
+				if (s.toLowerCase().contains("plus")) s = "+";
+				if (s.toLowerCase().contains("minus")) s = "-";
+				if (s.toLowerCase().contains("times")) s = "*";
+				if (s.toLowerCase().contains("divide")) s = "/";
+				if (s.toLowerCase().contains("pi")) s = "Math.PI";
+				else if (s.matches(".[a-zA-Z]")) continue;
+				
+				equation += s;
+			}
+			
+			ScriptEngineManager mgr = new ScriptEngineManager();
+			ScriptEngine engine = mgr.getEngineByName("JavaScript");
+			String result = Float.toString((float) (double) engine.eval(equation));
+			if (result.endsWith(".0")) result = result.substring(0, result.lastIndexOf(".0"));
+			respond("=" + result);
+		}
+		else if (c(" pi ")) respond("the first 15 digits of Pi are " + Math.PI);
+		
 		else respond("Could you please repeat that??");
 	}
 	
