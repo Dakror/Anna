@@ -12,13 +12,11 @@ import de.dakror.gamesetup.ui.ClickEvent;
 /**
  * @author Dakror
  */
-public class MainLayer extends Layer
-{
+public class MainLayer extends Layer {
 	public MicrophoneButton mic;
 	
 	@Override
-	public void draw(Graphics2D g)
-	{
+	public void draw(Graphics2D g) {
 		drawComponents(g);
 		
 		// Color c = g.getColor();
@@ -42,41 +40,33 @@ public class MainLayer extends Layer
 		// }
 		// catch (NullPointerException e)
 		// {}
-		// g.fillRect(Math.round(Game.getWidth() / 2 - Game.currentGame.leftAmp * width), Math.round(Game.getHeight() / 4 * 3), Math.round(Game.currentGame.leftAmp * width + Game.currentGame.rightAmp * width), 20);
+		// g.fillRect(Math.round(Game.getWidth() / 2 - Game.currentGame.leftAmp * width), Math.round(Game.getHeight() / 4 * 3), Math.round(Game.currentGame.leftAmp * width + Game.currentGame.rightAmp *
+		// width), 20);
 		// }
 		// g.setColor(c);
 	}
 	
 	@Override
-	public void update(int tick)
-	{
+	public void update(int tick) {
 		updateComponents(tick);
 	}
 	
 	@Override
-	public void init()
-	{
+	public void init() {
 		mic = new MicrophoneButton((Game.getWidth() - 256) / 2, (Game.getHeight() - 256) / 2);
-		mic.addClickEvent(new ClickEvent()
-		{
+		mic.addClickEvent(new ClickEvent() {
 			@Override
-			public void trigger()
-			{
+			public void trigger() {
 				if (Game.currentGame.mic.getState() != CaptureState.CLOSED) // already recording
 				{
 					Game.currentGame.mic.close();
 					Game.currentGame.sendRecognizeRequest();
 					return;
-				}
-				else
-				{
-					try
-					{
+				} else {
+					try {
 						Game.currentGame.mic.captureAudioToFile(Game.currentGame.file);
 						Game.currentGame.mic.open();
-					}
-					catch (Exception e1)
-					{
+					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
 				}

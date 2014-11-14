@@ -19,8 +19,7 @@ import de.dakror.gamesetup.GameFrame;
 /**
  * @author Dakror
  */
-public class Game extends GameFrame
-{
+public class Game extends GameFrame {
 	public static Game currentGame;
 	
 	public Microphone mic;
@@ -32,14 +31,12 @@ public class Game extends GameFrame
 	
 	public File file;
 	
-	public Game()
-	{
+	public Game() {
 		currentGame = this;
 	}
 	
 	@Override
-	public void initGame()
-	{
+	public void initGame() {
 		mic = new Microphone(AudioFileFormat.Type.WAVE);
 		recognizer = new Recognizer(Languages.ENGLISH_US, false);
 		synthesiser = new Synthesiser(Synthesiser.LANG_US_ENGLISH);
@@ -48,29 +45,21 @@ public class Game extends GameFrame
 	}
 	
 	@Override
-	public void draw(Graphics2D g)
-	{
-		if (layers.size() == 0)
-		{
+	public void draw(Graphics2D g) {
+		if (layers.size() == 0) {
 			addLayer(new MainLayer());
 		}
 		
 		drawLayers(g);
 	}
 	
-	public void sendRecognizeRequest()
-	{
-		new Thread()
-		{
+	public void sendRecognizeRequest() {
+		new Thread() {
 			@Override
-			public void run()
-			{
-				try
-				{
+			public void run() {
+				try {
 					Reaction.react(recognizer.getRecognizedDataForWave(file));
-				}
-				catch (Exception e)
-				{
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 				

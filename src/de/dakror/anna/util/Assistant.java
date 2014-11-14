@@ -10,14 +10,11 @@ import java.util.regex.Pattern;
 /**
  * @author Dakror
  */
-public class Assistant
-{
-	public static void copyInputStream(InputStream in, OutputStream out) throws IOException
-	{
+public class Assistant {
+	public static void copyInputStream(InputStream in, OutputStream out) throws IOException {
 		byte[] buffer = new byte[1024];
 		int len = in.read(buffer);
-		while (len >= 0)
-		{
+		while (len >= 0) {
 			out.write(buffer, 0, len);
 			len = in.read(buffer);
 		}
@@ -25,19 +22,15 @@ public class Assistant
 		out.close();
 	}
 	
-	public static String getDefaultBrowser()
-	{
-		try
-		{
+	public static String getDefaultBrowser() {
+		try {
 			Process process = Runtime.getRuntime().exec("REG QUERY HKEY_CLASSES_ROOT\\http\\shell\\open\\command");
 			Scanner kb = new Scanner(process.getInputStream());
-			while (kb.hasNextLine())
-			{
+			while (kb.hasNextLine()) {
 				String registry = (kb.nextLine()).replaceAll("\\\\", "/").trim();
 				
 				Matcher matcher = Pattern.compile("/(?=[^/]*$)(.+?)[.]").matcher(registry);
-				if (matcher.find())
-				{
+				if (matcher.find()) {
 					kb.close();
 					String defaultBrowser = matcher.group(1);
 					defaultBrowser = defaultBrowser.substring(0, 1).toUpperCase() + defaultBrowser.substring(1, defaultBrowser.length());
@@ -45,9 +38,7 @@ public class Assistant
 				}
 			}
 			kb.close();
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "Unable to get default browser";

@@ -9,31 +9,25 @@ import de.dakror.gamesetup.ui.ClickableComponent;
 /**
  * @author Dakror
  */
-public class MicrophoneButton extends ClickableComponent
-{
+public class MicrophoneButton extends ClickableComponent {
 	public boolean selected;
 	
-	public MicrophoneButton(int x, int y)
-	{
+	public MicrophoneButton(int x, int y) {
 		super(x, y, 256, 256);
 		selected = false;
-		addClickEvent(new ClickEvent()
-		{
+		addClickEvent(new ClickEvent() {
 			@Override
-			public void trigger()
-			{
+			public void trigger() {
 				selected = !selected;
 			}
 		});
 	}
 	
 	@Override
-	public void draw(Graphics2D g)
-	{
+	public void draw(Graphics2D g) {
 		g.drawImage(Game.getImage(state == 1 || selected ? "microphone_blue.png" : "microphone.png"), x, y, width, height, Game.w);
 	}
 	
 	@Override
-	public void update(int tick)
-	{}
+	public void update(int tick) {}
 }

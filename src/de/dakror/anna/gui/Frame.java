@@ -24,8 +24,7 @@ import de.dakror.anna.ai.Reaction;
 /**
  * @author Dakror
  */
-public class Frame extends JFrame
-{
+public class Frame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	public static Frame frame;
@@ -39,8 +38,7 @@ public class Frame extends JFrame
 	
 	public File file;
 	
-	public Frame()
-	{
+	public Frame() {
 		super();
 		
 		frame = this;
@@ -55,28 +53,21 @@ public class Frame extends JFrame
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		rec = new JToggleButton(new AbstractAction()
-		{
+		rec = new JToggleButton(new AbstractAction() {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
-			public void actionPerformed(ActionEvent e)
-			{
+			public void actionPerformed(ActionEvent e) {
 				if (mic.getState() != CaptureState.CLOSED) // already recording
 				{
 					mic.close();
 					sendRecognizeRequest();
 					return;
-				}
-				else
-				{
-					try
-					{
+				} else {
+					try {
 						mic.captureAudioToFile(file);
 						mic.open();
-					}
-					catch (Exception e1)
-					{
+					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
 				}
@@ -96,19 +87,13 @@ public class Frame extends JFrame
 		setVisible(true);
 	}
 	
-	public void sendRecognizeRequest()
-	{
-		new Thread()
-		{
+	public void sendRecognizeRequest() {
+		new Thread() {
 			@Override
-			public void run()
-			{
-				try
-				{
+			public void run() {
+				try {
 					Reaction.react(recognizer.getRecognizedDataForWave(file));
-				}
-				catch (Exception e)
-				{
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 				

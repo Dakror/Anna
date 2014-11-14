@@ -18,12 +18,10 @@ import de.dakror.anna.util.Assistant;
 /**
  * @author Dakror
  */
-public class Reaction
-{
+public class Reaction {
 	private static GoogleResponse input;
 	
-	public static void react(GoogleResponse input) throws Exception
-	{
+	public static void react(GoogleResponse input) throws Exception {
 		Reaction.input = input;
 		CFG.p(input.getResponse(), input.getConfidence(), input.getAllPossibleResponses());
 		
@@ -32,20 +30,16 @@ public class Reaction
 		else if (c(" your name ")) respond("My name is Anna");
 		else if (c(" how old ") || c(" version ") || c(" age ")) respond("My current version is " + CFG.PHASE + "." + CFG.VERSION);
 		else if (c(" wood chuck ") || c(" woodchuck ") || c(" chuck wood ")) respond("He would chuck, he would, as much as he could, and chuck as much wood as a woodchuck would, if a woodchuck could chuck wood.");
-		else if (c(" browse ") || c(" internet "))
-		{
+		else if (c(" browse ") || c(" internet ")) {
 			String[] parts = input.getResponse().split(" ");
 			String browser = Assistant.getDefaultBrowser();
-			if (browser.startsWith("Unable"))
-			{
+			if (browser.startsWith("Unable")) {
 				respond("I couldn't figure out the name of your default browser. I'm sorry");
 				return;
 			}
 			boolean found = false;
-			for (int i = 0; i < parts.length; i++)
-			{
-				if (parts[i].contains("."))
-				{
+			for (int i = 0; i < parts.length; i++) {
+				if (parts[i].contains(".")) {
 					respond("Opening " + Assistant.getDefaultBrowser());
 					Desktop.getDesktop().browse(new URI("http://" + parts[i]));
 					found = true;
@@ -54,25 +48,18 @@ public class Reaction
 			}
 			
 			if (!found) respond("Please tell me what to browse??");
-		}
-		else if (c(" search ") || c(" google "))
-		{
+		} else if (c(" search ") || c(" google ")) {
 			String[] parts = input.getResponse().split(" ");
 			
-			if (parts.length == 1)
-			{
+			if (parts.length == 1) {
 				respond("Please tell me what to search??");
 				return;
-			}
-			else
-			{
+			} else {
 				String q = "";
 				boolean images = false;
-				for (String s : parts)
-				{
+				for (String s : parts) {
 					if (s.toLowerCase().contains("google") || s.toLowerCase().contains("search")) continue;
-					if (s.toLowerCase().contains("images"))
-					{
+					if (s.toLowerCase().contains("images")) {
 						images = true;
 						continue;
 					}
@@ -80,8 +67,7 @@ public class Reaction
 				}
 				
 				String browser = Assistant.getDefaultBrowser();
-				if (browser.startsWith("Unable"))
-				{
+				if (browser.startsWith("Unable")) {
 					respond("I couldn't figure out the name of your default browser. I'm sorry");
 					return;
 				}
@@ -91,30 +77,24 @@ public class Reaction
 				
 				Desktop.getDesktop().browse(new URI("http://google.com/search?q=" + q + (images ? "&tbm=isch" : "")));
 			}
-		}
-		else if (c(" start ") && (c(" toolbar ") || c(" tool bar ")))
-		{
+		} else if (c(" start ") && (c(" toolbar ") || c(" tool bar "))) {
 			String[] parts = input.getResponse().split(" ");
 			
 			File dir = new File(System.getenv("AppData") + "/Microsoft/Internet Explorer/Quick Launch/User Pinned/TaskBar");
 			boolean app = false;
-			for (File f : dir.listFiles())
-			{
+			for (File f : dir.listFiles()) {
 				boolean found = true;
-				for (int i = 0; i < parts.length; i++)
-				{
+				for (int i = 0; i < parts.length; i++) {
 					if (parts[i].toLowerCase().contains("start") || parts[i].toLowerCase().contains("toolbar")) continue;
 					
-					if (!f.getName().toLowerCase().contains(parts[i].toLowerCase()))
-					{
+					if (!f.getName().toLowerCase().contains(parts[i].toLowerCase())) {
 						Thread.sleep(1);
 						found = false;
 						break;
 					}
 				}
 				
-				if (found)
-				{
+				if (found) {
 					respond("Opening " + f.getName().substring(0, f.getName().lastIndexOf(".")));
 					Runtime.getRuntime().exec("rundll32 SHELL32.DLL,ShellExec_RunDLL \"" + f.getPath() + "\"");
 					
@@ -123,19 +103,16 @@ public class Reaction
 				}
 			}
 			
-			if (!app)
-			{
+			if (!app) {
 				respond("I couldn't find any program in your toolbar with that name. I'm sorry");
 			}
 		}
 		// -- maths -- //
-		else if (c(" calculate ") || c(" plus ") || c(" minus ") || c("-") || c(" times ") || c(" divided ") || c(" divide "))
-		{
+		else if (c(" calculate ") || c(" plus ") || c(" minus ") || c("-") || c(" times ") || c(" divided ") || c(" divide ")) {
 			String equation = "";
 			
 			String[] parts = input.getResponse().split(" ");
-			for (String part : parts)
-			{
+			for (String part : parts) {
 				String s = part;
 				if (s.toLowerCase().contains("plus")) s = "+";
 				if (s.toLowerCase().contains("minus")) s = "-";
@@ -152,39 +129,31 @@ public class Reaction
 			String result = Float.toString((float) (double) engine.eval(equation));
 			if (result.endsWith(".0")) result = result.substring(0, result.lastIndexOf(".0"));
 			respond("=" + result);
-		}
-		else if (c(" pi ")) respond("the first 15 digits of Pi are " + Math.PI);
+		} else if (c(" pi ")) respond("the first 15 digits of Pi are " + Math.PI);
 		
 		else respond("Could you please repeat that??");
 	}
 	
-	public static void respond(String text)
-	{
-		try
-		{
+	public static void respond(String text) {
+		try {
 			Game.currentGame.player = new Player(Game.currentGame.synthesiser.getMP3Data(text)/* , new VisualEffectDevice(new JavaSoundAudioDeviceFactory().createAudioDevice()) */);
 			Game.currentGame.player.play();
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private static boolean c(String s)
-	{
+	private static boolean c(String s) {
 		if (input.getResponse() == null) return false;
 		return i().contains(s);
 	}
 	
-	private static boolean cn()
-	{
+	private static boolean cn() {
 		if (input.getResponse() == null) return false;
 		return i().contains("anna") || i().contains("ana");
 	}
 	
-	private static String i()
-	{
+	private static String i() {
 		return (" " + input.getResponse().toLowerCase() + " ");
 	}
 	
